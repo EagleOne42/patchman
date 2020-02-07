@@ -189,7 +189,8 @@ function get_host_data {
             fqdn=${host_name}
         fi
     fi
-    host_kernel=$(uname -r | sed -e 's/\+/%2b/g')
+    #host_kernel=$(uname -r | sed -e 's/\+/%2b/g')
+    host_kernel=$(uname -r)
     host_arch=$(uname -m)
 
     os='unknown'
@@ -198,6 +199,8 @@ function get_host_data {
         . /etc/os-release
         if [ "${ID}" == "debian" ] ; then
             os="Debian $(cat /etc/debian_version)"
+	elif [ "${ID}" == "raspbian" ] ; then
+	    os="Raspbian $(cat /etc/debian_version)"
         elif [ "${ID}" == "ubuntu" ] ; then
             os="${PRETTY_NAME}"
         elif [ "${ID}" == "centos" ] ; then
