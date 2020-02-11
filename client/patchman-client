@@ -189,7 +189,6 @@ function get_host_data {
             fqdn=${host_name}
         fi
     fi
-    #host_kernel=$(uname -r | sed -e 's/\+/%2b/g')
     host_kernel=$(uname -r)
     host_arch=$(uname -m)
 
@@ -199,8 +198,8 @@ function get_host_data {
         . /etc/os-release
         if [ "${ID}" == "debian" ] ; then
             os="Debian $(cat /etc/debian_version)"
-	elif [ "${ID}" == "raspbian" ] ; then
-	    os="Raspbian $(cat /etc/debian_version)"
+        elif [ "${ID}" == "raspbian" ] ; then
+            os="Raspbian $(cat /etc/debian_version)"
         elif [ "${ID}" == "ubuntu" ] ; then
             os="${PRETTY_NAME}"
         elif [ "${ID}" == "centos" ] ; then
@@ -213,7 +212,7 @@ function get_host_data {
             os="${PRETTY_NAME}"
         else
             os="${NAME} ${VERSION}"
-	fi
+        fi
     else
         releases="/etc/SuSE-release /etc/lsb-release /etc/debian_version /etc/fermi-release /etc/redhat-release /etc/fedora-release /etc/centos-release"
         for i in ${releases} ; do
@@ -319,8 +318,8 @@ function get_repos {
         repos=$(apt-cache policy | grep -E "[0-9]{1,5} http(s)?:" | grep -v Translation | sed -e "s/^ *//g" -e "s/ *$//g" | cut -d " " -f 1,2,3,4)
         dist_repos=$(echo "${repos}" | grep -v -e "Packages$")
         nondist_repos=$(echo "${repos}" | grep -e "Packages$")
-        echo "${dist_repos}" | sed -e "s/\([0-9]*\) \(http:.*\|https:.*\)[\/]\? \(.*\/.*\) \(.*\)/${repo_string//\//\\/} \2\/dists\/\3\/binary-\4' '\1' '\2\/dists\/\3\/binary-\4'/" >> "${tmpfile_rep}"
-        echo "${nondist_repos}" | sed -e "s/\([0-9]*\) \(http:.*\|https:.*\)[\/]\? \(.*\/\?.*\) Packages/${repo_string//\//\\/} \2\/\3' '\1' '\2\/\3'/" >> "${tmpfile_rep}"
+        echo "${dist_repos}" | sed -e "s/\([0-9]*\) \(http:.*\|https:.*\)[\/]\? \(.*\/.*\) \(.*\)/${repo_string} \2\/dists\/\3\/binary-\4' '\1' '\2\/dists\/\3\/binary-\4'/" >> "${tmpfile_rep}"
+        echo "${nondist_repos}" | sed -e "s/\([0-9]*\) \(http:.*\|https:.*\)[\/]\? \(.*\/\?.*\) Packages/${repo_string} \2\/\3' '\1' '\2\/\3'/" >> "${tmpfile_rep}"
     fi
 
     # SUSE
